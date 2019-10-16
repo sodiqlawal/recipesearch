@@ -5,7 +5,7 @@ import Recipe from './Recipe';
 
 export default class RecipeList extends Component{
     render(){
-        const { recipes, handleDetails } = this.props;
+        const { recipes, handleDetails, error } = this.props;
         return (
             <React.Fragment>
                 <div className='container my-5'>
@@ -15,7 +15,7 @@ export default class RecipeList extends Component{
                         </div>
                     </div>
                     <div className='row'>
-                        {
+                        {error?<h1 className='text-danger text-center mx-auto'>{error}</h1>:
                             recipes.map(recipe => {
                                 return(
                                     <Recipe 

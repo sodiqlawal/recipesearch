@@ -16,7 +16,8 @@ class App extends React.Component{
     pageIndex: 0,
     search: '',
     base_url: 'https://www.food2fork.com/api/search?key=47b3e4cf3c41f0e4989b287200ed8363',
-    query: '&q='
+    query: '&q=',
+    error:''
   }
 }
 
@@ -24,9 +25,19 @@ class App extends React.Component{
     try{
     const recipe = await fetch(this.state.url);
     const recipeState = await recipe.json();
-    this.setState({
-      recipes: recipeState.recipes
-    })
+    if(recipeState.recipes.length === 0){
+      this.setState(()=>{
+        return {error:'sorry, but your search did not return any results'}
+      })
+    }else{
+      this.setState(()=>{
+        return {recipes: recipeState.recipes}
+      })
+    }
+
+    // this.setState({
+    //   recipes: recipeState.recipes
+    // })
   }catch (error){
     console.log('their is error fectching the api')
   }
@@ -45,7 +56,7 @@ class App extends React.Component{
     this.setState(()=>{
       return {url:`${base_url}${query}${search}`,search:""}
     },()=>{
-      this.getRecipes();
+      this.getRecipes();  
     })
   }
 
@@ -63,7 +74,9 @@ class App extends React.Component{
       <RecipeSearch handleChange={this.handleChange} 
       handleSubmit={this.handleSubmit}
       value={this.state.search}/>
-      <RecipeList handleDetails={this.handleDetails} recipes={this.state.recipes} />
+      <RecipeList handleDetails={this.handleDetails} 
+      error={this.state.error}
+      recipes={this.state.recipes} />
       </div>)
       case 1:
       return (<RecipeDetails handleIndex={this.handleIndex} id={this.state.details_id} />

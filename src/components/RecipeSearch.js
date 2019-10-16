@@ -1,4 +1,11 @@
 import React,{Component} from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+import { fab, faSkype } from '@fortawesome/free-brands-svg-icons'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
+library.add(fab,faSkype, fas, faSearch);
 
 export default class RecipeSearch extends Component{
     render(){
@@ -28,7 +35,7 @@ export default class RecipeSearch extends Component{
                          />
                         <div className='input-group-append'>
                             <button type='submit' className='input-group-text bg-primary text-white'>
-                                <i className='fas fa-search' />
+                            &rarr;
                             </button>
                         </div>
                         </div>
