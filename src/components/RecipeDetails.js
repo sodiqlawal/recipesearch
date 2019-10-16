@@ -1,29 +1,26 @@
 import React, { Component } from 'react';
-// import {ingredient} from './ingredient';
+import {ingredient} from './ingredient';
 
 export default class RecipeDetails extends Component {
-    constructor(props) {
-        super(props);
 
-        this.state = {
-            recipeDetailsApi:{},
-            url: `https://www.food2fork.com/api/get?key=9bad5db5fb2576e805a4b46a7cfd9ff0&rId=${this.props.id}`
-        }
+    state={
+        recipeDetailsApi: ingredient
     }
 
-
-    
       async componentDidMount(){
+        const id = this.props.id;
+        const url = `https://www.food2fork.com/api/get?key=47b3e4cf3c41f0e4989b287200ed8363&rId=${id}`
         try{
-            const recipe = await fetch(this.state.url);
+            const recipe = await fetch(url);
             const recipeState = await recipe.json();
-            this.setState({
-                recipeDetailsApi: recipeState.recipe
-            })
+            this.setState((state, props)=>{
+                return {recipeDetailsApi: recipeState.recipe}
+            }, () =>{});
           }catch (error){
             console.log(error)
           }
       }
+
     // componentDidMount(){
     //     fetch(this.state.url).then(recipe => recipe.json())
     //     .then((users) => {
@@ -43,12 +40,15 @@ export default class RecipeDetails extends Component {
             title,
             ingredients
         } = this.state.recipeDetailsApi;
+        const { handleIndex } = this.props;
         return (
             <React.Fragment>
                 <div className='container'>
                     <div className='row'>
                         <div className='col-10 mx-auto col-md-6 my-3'>
-                            <button type='button' className='btn btn-warning mb-5 text-capitalize'>
+                            <button type='button' 
+                            className='btn btn-warning mb-5 text-capitalize'
+                            onClick={()=>handleIndex(0)}>
                                 back to recipe list
                             </button>
                             <img src={image_url} className='d-block w-100' alt='recipe' />
@@ -73,14 +73,14 @@ export default class RecipeDetails extends Component {
                             <ul className='list-group mt-4'>
                                 <h2 className="mt-3 mb-4">Ingredients</h2>                             
                                 {
-                                    // ingredients.map((item, index) =>{
-                                    //     return (
-                                    //         <li key={index} className='list-group-item text-slanted'>
-                                    //             {item}
-                                    //         </li>
-                                    //     );
-                                    // })
-                                    console.log('ing', ingredients)
+                                    ingredients.map((item, index) =>{
+                                        return (
+                                            <li key={index} className='list-group-item text-slanted'>
+                                                {item}
+                                            </li>
+                                        );
+                                    })
+                                    // console.log('ing', ingredients)
                                 }
                             </ul>
                         </div>

@@ -9,6 +9,7 @@ export default class Recipe extends Component{
             publisher,
             recipe_id
         }= this.props.recipe;
+        const {handleDetails} = this.props;
 
         return(
             <React.Fragment>
@@ -26,7 +27,9 @@ export default class Recipe extends Component{
                             </h6>
                         </div>
                         <div className='card-footer'>
-                            <button type='button' className='btn btn-primary text-capitalize'>
+                            <button type='button' 
+                            className='btn btn-primary text-capitalize'
+                            onClick={()=>{handleDetails(1,recipe_id )}}>
                                 details
                             </button>
                             <a 

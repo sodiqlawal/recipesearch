@@ -1,44 +1,94 @@
 import React from 'react';
-// import RecipeList from './components/RecipeList';
+import RecipeList from './components/RecipeList';
 import RecipeDetails from './components/RecipeDetails'
-import './App.css';
+import RecipeSearch from './components/RecipeSearch';
 
-// const url = "https://www.food2fork.com/api/search?key=9bad5db5fb2576e805a4b46a7cfd9ff0";
+import './App.css';
   
 
 class App extends React.Component{
   constructor(){
     super();
     this.state={
+    url:'https://www.food2fork.com/api/search?key=47b3e4cf3c41f0e4989b287200ed8363',
     recipes: [],
-    details_id: 35382
+    details_id: 35382,
+    pageIndex: 0,
+    search: '',
+    base_url: 'https://www.food2fork.com/api/search?key=47b3e4cf3c41f0e4989b287200ed8363',
+    query: '&q='
   }
 }
 
-  // async getRecipes() {
-  //   try{
-  //   const recipe = await fetch(url);
-  //   const recipeState = await recipe.json();
-  //   // console.log(recipeState)
-  //   this.setState({
-  //     recipes: recipeState.recipes
-  //   })
-  // }catch (error){
-  //   console.log(error)
-  // }
+  async getRecipes() {
+    try{
+    const recipe = await fetch(this.state.url);
+    const recipeState = await recipe.json();
+    this.setState({
+      recipes: recipeState.recipes
+    })
+  }catch (error){
+    console.log('their is error fectching the api')
+  }
+  }
 
-  // }
 
-  // componentDidMount(){
-  //   this.getRecipes();
-  // }
+  handleChange=e=>{
+    this.setState({
+      search: e.target.value
+    },()=>{console.log(this.state.search)})
+  }
+
+  handleSubmit=e=>{
+    e.preventDefault();
+    const {base_url,query,search} = this.state;
+    this.setState(()=>{
+      return {url:`${base_url}${query}${search}`,search:""}
+    },()=>{
+      this.getRecipes();
+    })
+  }
+
+  componentDidMount(){
+    this.getRecipes();
+    // console.log(this.state.recipes)
+
+  }
+  displayPage=(index)=>{
+    switch(index){
+      default:
+      case 0:
+      return (
+        <div>
+      <RecipeSearch handleChange={this.handleChange} 
+      handleSubmit={this.handleSubmit}
+      value={this.state.search}/>
+      <RecipeList handleDetails={this.handleDetails} recipes={this.state.recipes} />
+      </div>)
+      case 1:
+      return (<RecipeDetails handleIndex={this.handleIndex} id={this.state.details_id} />
+        )
+    }
+  }
+
+  handleIndex = index => {
+    this.setState({
+      pageIndex: index
+    })
+  }
+
+  handleDetails = (index, id) => {
+    this.setState({
+      pageIndex: index,
+      details_id: id
+    })
+  }
 
   render(){
-  console.log(this.state.recipes)
+  const {pageIndex} = this.state
   return (
     <React.Fragment>
-      {/* <RecipeList recipes={this.state.recipes} /> */}
-      <RecipeDetails id={this.state.details_id} />
+      {this.displayPage(pageIndex)}
     </React.Fragment>
   );
 }

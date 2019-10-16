@@ -5,7 +5,7 @@ import Recipe from './Recipe';
 
 export default class RecipeList extends Component{
     render(){
-        const { recipes } = this.props;
+        const { recipes, handleDetails } = this.props;
         return (
             <React.Fragment>
                 <div className='container my-5'>
@@ -19,11 +19,13 @@ export default class RecipeList extends Component{
                             recipes.map(recipe => {
                                 return(
                                     <Recipe 
-                                    key={recipe.id}
+                                    handleDetails={handleDetails}
+                                    key={recipe.recipe_id}
                                     recipe={recipe}
                                     />
                                 )
                             })
+                            // console.log('recipe', recipes)
                         }
                     </div>
 
