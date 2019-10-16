@@ -29,7 +29,7 @@ export default class RecipeSearch extends Component{
                         <input type='text' 
                         className='form-control'
                         name='search'
-                        placeholder='onion,cucumber,carrots'
+                        placeholder='Search By Ingredients or Name'
                         value={value}
                         onChange={handleChange}
                          />
